@@ -18,23 +18,26 @@ class VideoProcessor(VideoTransformerBase):
         self.label = ['HI','I LOVE YOU','THUMPS UP','YES','NO', 'blank']
 
     def transform(self, frame):
-        img = frame.to_ndarray(format="bgr24")
-        # Preprocessing steps
-        cropframe = img[40:300, 0:300]
-        cropframe = cv2.cvtColor(cropframe, cv2.COLOR_BGR2GRAY)
-        cropframe = cv2.resize(cropframe, (48, 48))
-        cropframe = cropframe.reshape(1, 48, 48, 1) / 255.0
+        try:
+            img = frame.to_ndarray(format="bgr24")
+            # Preprocessing steps
+            cropframe = img[40:300, 0:300]
+            cropframe = cv2.cvtColor(cropframe, cv2.COLOR_BGR2GRAY)
+            cropframe = cv2.resize(cropframe, (48, 48))
+            cropframe = cropframe.reshape(1, 48, 48, 1) / 255.0
 
-        # Make prediction
-        pred = model.predict(cropframe)
-        prediction_label = self.label[np.argmax(pred)]
-        accuracy = np.max(pred) * 100
+            # Make prediction
+            pred = model.predict(cropframe)
+            prediction_label = self.label[np.argmax(pred)]
+            accuracy = np.max(pred) * 100
 
-        # Overlay text on the frame
-        if prediction_label != 'blank':
-            cv2.putText(img, f'{prediction_label}   {accuracy:.2f}%', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            # Overlay text on the frame
+            if prediction_label != 'blank':
+                cv2.putText(img, f'{prediction_label}   {accuracy:.2f}%', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
-        return img
+            return img
+        except Exception as e:
+            print(f"Exception at transform func = ", e)
 
 
 webrtc_ctx = webrtc_streamer(
