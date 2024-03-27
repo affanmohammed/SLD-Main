@@ -15,7 +15,7 @@ model.load_weights("sldnewmodel.h5")
 
 class VideoProcessor(VideoTransformerBase):
     def __init__(self):
-        self.label = ['HI','I LOVE YOU','YES','NO','THUMPS UP', 'blank']
+        self.label = ['HI','I LOVE YOU','NO','THUMPS UP','YES', 'blank']
 
     def transform(self, frame):
         try:
