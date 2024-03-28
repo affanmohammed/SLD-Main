@@ -1,5 +1,6 @@
-tensorflow
+tensorflow==2.13.0
 numpy
+keras==2.13.1
 opencv-python
 opencv-python-headless
 streamlit
